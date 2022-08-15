@@ -1,0 +1,66 @@
+
+create database store;
+
+create table store.countries(
+    code int primary key,
+    name varchar(20) unique ,
+    continent_name varchar(20) not null
+);
+
+
+create table store.users (
+    id int primary key ,
+    full_name varchar(20),
+    email varchar(20) unique ,
+    gender char(1) check ( gender='m' or gender = 'f') ,
+    date_of_birth varchar(15),
+    created_at datetime,
+
+    country_code int ,
+    foreign key (country_code) references countries(code)
+);
+
+
+create table store.orders(
+    id int primary key ,
+    users_id int  ,
+    status varchar(6) check ( status ='start' or status = 'finish' ),
+    created_at datetime,
+
+    foreign key (users_id) references users(id)
+
+);
+
+create table store.products(
+    id int primary key ,
+    name varchar(10) not null ,
+    price int default 0 ,
+    status varchar(10) check ( status = 'valid' or status = 'expired' ),
+    created_at datetime
+
+);
+
+create table store.order_product(
+    order_id int ,
+    product_id int ,
+    guantity int default 0,
+
+    foreign key (order_id) references orders (id),
+    foreign key (product_id) references products(id)
+);
+
+
+
+insert into store.countries values (10 , 'norah' , 'abdullah');
+
+insert into store.users values (22,'reema abdullah','reema@gmail.com','f','20/6/2000',NOW(),30);
+
+insert into store.orders values (15,10,'start');
+
+insert into store.order_product values (12,13,15);
+
+insert into store.products values (18,'norah',5,'valid',NOW());
+
+update store.countries set name = 'reema';
+
+delete from store.products where id = 18 ;
